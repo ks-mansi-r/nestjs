@@ -5,8 +5,9 @@ import { AppService } from './app.service';
 
 /* User created modules*/
 import { UsersModule } from './users/users.module';
+import { PostsModule } from './posts/posts.module';
 @Module({
-  imports: [UsersModule],
+  imports: [UsersModule, PostsModule],
   controllers: [AppController],
   providers: [AppService],
 })
