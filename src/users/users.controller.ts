@@ -2,9 +2,11 @@ import { Body, Controller, Delete, Get, Header, Ip, Param, ParseIntPipe, Post, Q
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersService } from './providers/users.service';
 import { GetUsersParamDto } from './dtos/get-users-param.dto';
+import { ApiQuery, ApiTags, ApiOperation, ApiResponse} from '@nestjs/swagger';
 // import { query, query } from 'express';
 
 @Controller('users')
+@ApiTags('Users')
 export class UsersController {
 
   constructor(
@@ -12,7 +14,29 @@ export class UsersController {
   ) { }
 
 
-  @Get('/:id?/:optional?/')
+  @Get('/:id/:optional?/')
+  @ApiOperation({
+    summary: 'Fetches a list of entries returned per query',
+  })
+  @ApiResponse({
+    status:200,
+    description:"Users fetched successfully based on the query"
+  })
+  @ApiQuery({
+    name:'limit',
+    type:'number',
+    required:false,
+    description: 'The number of entries returned per query',
+    example: 10,
+  })
+  @ApiQuery({
+    name:'page',
+    type:'number',
+    required:false,
+    description:'The position of the page number that you want the API to return ',
+    example: 1,
+  })
+
   public getUsers(@Param('id', ParseIntPipe) id: number | undefined,) {
     console.log(id);
     // console.log(typeof id);
