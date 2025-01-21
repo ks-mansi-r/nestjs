@@ -10,7 +10,7 @@ export class PostsController {
         private readonly postsService: PostsService,
     ) { }
 
-    @Get()
+    @Get('/:userId?')
     public getPosts(@Param('userId')  userId: String){
         return this.postsService.findAll(userId);
     }
