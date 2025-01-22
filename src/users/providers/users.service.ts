@@ -2,10 +2,16 @@ import { Inject, Injectable, Module, forwardRef } from "@nestjs/common";
 import { UsersController } from "../users.controller";
 import { GetUsersParamDto } from "../dtos/get-users-param.dto";
 import { AuthService } from "src/auth/providers/auth.service";
+/**
+ * class to connect user table and perform business operations
+ */
 
 
 @Injectable()
 export class UsersService{
+    /**
+     * The method to get all the users from the database
+     */
 
 
     constructor(
@@ -31,6 +37,9 @@ export class UsersService{
             },
         ];
     }
+    /**
+     * Find a single user string the ID of the user
+     */
 
     // find by a id
     public findOneById(id: String){
