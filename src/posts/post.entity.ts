@@ -1,7 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { postType } from "./enums/postType.enum";
 import { PostStatus } from "./enums/postStatus.enum";
-import { CreatePostMetaOPtionsDto } from "./dtos/create-post-meta-options.dto";
+import { CreatePostMetaOPtionsDto } from "../meta-options/dtos/create-post-meta-options.dto";
+import { MetaOption } from "src/meta-options/meta-option.entity";
 
 @Entity()
 export class Post{
@@ -17,9 +18,9 @@ export class Post{
 
   @Column({
     type:'enum',
-    enum:postType,
     nullable:false,
-    default:postType.POST,
+    enum: ['post','page','story','series'], // Add all expected values here
+    default: 'post',
   })
   postType:postType;
 
@@ -32,9 +33,9 @@ export class Post{
 
   @Column({
     type:'enum',
-    enum:postType,
+    enum:['draft','scheduled','review','published'],
     nullable:false,
-    default:PostStatus.DRAFT,
+    default:'draft'
   })
   status:PostStatus;
 
@@ -66,7 +67,10 @@ export class Post{
   })
   publishOn?: Date;
 
+  @OneToOne(()=>MetaOption)
+  @JoinColumn()
+  metaOptions?: MetaOption;
 //   work on these in lectures on relationships
   tags?: ['typescript', 'nestjs'];
-  metaOptions?:CreatePostMetaOPtionsDto[];
+  
 }

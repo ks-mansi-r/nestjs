@@ -3,7 +3,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { PostStatus } from '../enums/postStatus.enum';
 import { postType } from '../enums/postType.enum';
-import { CreatePostMetaOPtionsDto } from './create-post-meta-options.dto';
+import { CreatePostMetaOPtionsDto } from '../../meta-options/dtos/create-post-meta-options.dto';
 
 
 // {
