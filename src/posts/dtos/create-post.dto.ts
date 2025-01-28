@@ -1,4 +1,4 @@
-import { IsArray, IsEnum, IsISO8601, IsJSON, IsNotEmpty, IsOptional, IsString, IsUrl, Matches, MinLength, ValidateNested } from 'class-validator';
+import { IsArray, IsEnum, IsISO8601, IsJSON, IsNotEmpty, IsOptional, IsString, IsUrl, Matches, MaxLength, MinLength, ValidateNested } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { PostStatus } from '../enums/postStatus.enum';
@@ -30,6 +30,7 @@ export class CreatePostDto {
     })
     @IsString()
     @MinLength(4)
+    @MaxLength(512)
     @IsNotEmpty()
     title: string;
                
@@ -51,6 +52,7 @@ export class CreatePostDto {
         message: 'A slug should be all small letters and uses only "-" and without spaces . For exxample "my-url"',
     
     })
+    @MaxLength(256)
     slug: string;
 
 
@@ -84,6 +86,7 @@ export class CreatePostDto {
     })
     @IsOptional()
     @IsUrl()
+    @MaxLength(1024)
     featuredImageUrl?: string;
 
 

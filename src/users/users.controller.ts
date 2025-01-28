@@ -46,12 +46,14 @@ export class UsersController {
   }
 
   @Post()
-  public createUsers(
-    @Body() createUserDto: CreateUserDto
+  public createUsers(@Body() createUserDto: CreateUserDto
+  
     // @Ip() ip: any,
   ) {
-    console.log(createUserDto instanceof CreateUserDto);
+    // console.log(createUserDto instanceof CreateUserDto);
     // console.log(ip);
-    return 'send post request';
+    return this.userService.createUser(createUserDto);
   }
+
+
 }
