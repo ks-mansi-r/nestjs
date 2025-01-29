@@ -13,6 +13,8 @@ export class MetaOptionsService {
         @InjectRepository(MetaOption)
         private readonly metaOptionsRepository:Repository<MetaOption>,
     ){}
+
+    // create a new Meta option
     public async create(createPostMetaOptionDto: CreatePostMetaOPtionsDto){
           
             let metaOption = this.metaOptionsRepository.create(

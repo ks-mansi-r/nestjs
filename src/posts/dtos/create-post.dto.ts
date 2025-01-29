@@ -1,8 +1,8 @@
-import { IsArray, IsEnum, IsISO8601, IsJSON, IsNotEmpty, IsOptional, IsString, IsUrl, Matches, MaxLength, MinLength, ValidateNested } from 'class-validator';
+import { IsArray, IsEnum, IsInt, IsISO8601, IsJSON, IsNotEmpty, IsOptional, IsString, IsUrl, Matches, MaxLength, MinLength, ValidateNested } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { PostStatus } from '../enums/postStatus.enum';
-import { postType } from '../enums/postType.enum';
+import { PostType } from '../enums/postType.enum';
 import { CreatePostMetaOPtionsDto } from '../../meta-options/dtos/create-post-meta-options.dto';
 
 
@@ -35,10 +35,10 @@ export class CreatePostDto {
     title: string;
                
     @ApiProperty({
-        enum:postType,
+        enum:PostType,
         description:"Possible values, 'post','page','story','series'",
     })
-    @IsEnum(postType)
+    @IsEnum(PostType)
     @IsNotEmpty()
     postType: string;
 
@@ -48,6 +48,7 @@ export class CreatePostDto {
     })
     @IsString()
     @IsNotEmpty()
+    @MinLength(4)
     @Matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
         message: 'A slug should be all small letters and uses only "-" and without spaces . For exxample "my-url"',
     
@@ -86,6 +87,7 @@ export class CreatePostDto {
     })
     @IsOptional()
     @IsUrl()
+    @MinLength(4)
     @MaxLength(1024)
     featuredImageUrl?: string;
 
@@ -111,26 +113,51 @@ export class CreatePostDto {
 
 
     @ApiPropertyOptional({
-        type:'array',
+        type:'object',
         required:false,
         items:
         {
             type:'object',properties:{
-                key:{
-                    type:'string',
-                    description:"The key can be any string identifier for your meta option",
+               metaValue:{
+                    type:'json',
+                    description:"The metaValue is a JSON string",
+                    example: '{"sidebarEnabled":true}',
                 },
-                value:{
-                    type:'any',
-                    description:'the key can be any string identifier for your meta option',
-                    example:'sidebarEnabled',
-                }
-            }
-        }
+            
+            },
+        },
     })
     @IsOptional()
-    @IsArray()
     @ValidateNested({each : true})
     @Type(()=>CreatePostMetaOPtionsDto)
-    metaOptions?: [{ key: 'sidebarEnabled'; value: false }];
+
+    // whenever user send a request where meta options are not available so let's expect a null value as well for these
+    metaOptions?: CreatePostMetaOPtionsDto|null;
+
+
+    @ApiProperty({
+        type: 'integer',
+        required: true,
+        example: 1,
+    })
+    @IsNotEmpty()
+    @IsInt()
+    authorId : number;
+
+
+    // {
+    //     "title" : "What's new with NestJs !",
+    //    "postType": "page",
+    //    "slug":"new-with-nestjs",
+    //    "status":"draft",
+    //   "content":"test content",
+    //    "schema":"{\r\n\"@context\":\"https:\/\/schema.org\",\r\n\"@type\":\"person\"\r\n}",
+    //     "featuredImageUrl":"http://localhost.com/images/image1.ipg",
+    //    "publishOn":"2024-03-16T07:46:32+0000",
+    //     "metaOptions":
+    //     { 
+    //          "metaValue":  "{\"sidebarEnabled\":true, \"footerActive\":true}"
+    //     }
+    //     }
+
 }

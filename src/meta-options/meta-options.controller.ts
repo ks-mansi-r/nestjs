@@ -11,9 +11,9 @@ export class MetaOptionsController {
         private readonly metaOptionService : MetaOptionsService,
     ){}
     @Post()
-    public create(@Body() CreatePostMetaOPtionsDto: CreatePostMetaOPtionsDto){
+    public async create(@Body() createPostMetaOPtionsDto: CreatePostMetaOPtionsDto){
 
-    return this.metaOptionService.create(CreatePostMetaOPtionsDto);
+    return this.metaOptionService.create(createPostMetaOPtionsDto);
 
 }
 }

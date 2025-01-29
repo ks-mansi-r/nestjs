@@ -3,13 +3,12 @@ import { IsJSON, isJSON, IsNotEmpty, IsString } from "class-validator";
 export class CreatePostMetaOPtionsDto{
 
 
-    @IsNotEmpty()
+    // @IsNotEmpty()
      @IsJSON()
     metaValue:string;
-    // @IsString()
-    // @IsNotEmpty()
-    // key: string;
+    
 
-    // @IsNotEmpty()
-    // value : any;
+//     {
+//         "metaValue":"{\"sidebarEnabled\":true, \"footerActive\":true}"
+//     // }
 }
