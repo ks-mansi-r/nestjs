@@ -6,7 +6,9 @@ import { Post } from "../post.entity";
 import { Repository } from "typeorm";
 import { MetaOption } from "src/meta-options/meta-option.entity";
 import { MetaOptionsService } from "src/meta-options/providers/meta-options.service";
-
+import { TagsService } from "src/tags/providers/tags.service";
+import { Tag } from "src/tags/tag.entity";
+import { PatchPostsDto } from "../dtos/patch-post.dto";
 @Injectable()
 export class PostsService {
     constructor(
@@ -22,6 +24,13 @@ export class PostsService {
         // inject metaOPtionRepository
         @InjectRepository(MetaOption)
         public readonly metaOptionsRepository: Repository<MetaOption>,
+   
+
+        //inject tagservice
+   
+      private readonly tagsService: TagsService,
+
+
     ) { }
 
     public async create(@Body()createPostDto: CreatePostDto) {
@@ -35,12 +44,15 @@ export class PostsService {
             // find author from database based on authorId
         let author = await this.usersService.findOneById(createPostDto.authorId);
 
+        // find tags
+        let tags = await this.tagsService.findMultipleTags(createPostDto.tags);
         // Create the post
         
             // Create post
             let post = this.postRepository.create({
                 ...createPostDto,
                 author: author,
+                tags: tags,
                 // Ensure postType is a valid PostType object or its ID
             });
    
@@ -63,6 +75,8 @@ export class PostsService {
         //    add metaoptions for get a record
             relations:{
                 metaOptions: true,
+                author:true,
+                tags: true,
             },
          });
 
@@ -81,6 +95,33 @@ export class PostsService {
         // },
 
         // ];
+    }
+
+    public async update(patchPostDto:PatchPostsDto){
+        //find tags
+        //find the post
+        //update the properties
+        //Assign the new tags
+        //save the post and return
+
+        let tags = await this.tagsService.findMultipleTags(patchPostDto.tags);
+
+        let post = await this.postRepository.findOneBy({
+            id: patchPostDto.id,
+        })
+
+        post.title = patchPostDto.title?? post.title;
+        post.content = patchPostDto.content?? post.content;
+        post.status = patchPostDto.status?? post.status;
+        post.PostType= patchPostDto.postType?? post.PostType;
+        post.slug = patchPostDto.slug?? post.slug;
+        post.featuredImageUrl = patchPostDto.featuredImageUrl?? post.featuredImageUrl;
+        post.publishOn = patchPostDto.publishOn?? post.publishOn;
+    
+        post.tags = tags;
+
+        return await this.postRepository.save(post);
+    
     }
 
     public async delete(id:number){

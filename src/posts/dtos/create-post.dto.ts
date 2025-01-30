@@ -40,7 +40,7 @@ export class CreatePostDto {
     })
     @IsEnum(PostType)
     @IsNotEmpty()
-    postType: string;
+    postType: PostType;
 
     @ApiProperty({
         description:"For-example- my-url",
@@ -102,14 +102,12 @@ export class CreatePostDto {
 
 
     @ApiPropertyOptional({
-        description:"Array of thags passed as string values",
-        example:["nestjs","typescript"],
+        description:"Array of ids of tags",
+        example:[1,2],
     })
     @IsOptional()
     @IsArray()
-    @IsString({ each: true })
-    @MinLength(3, { each: true })
-    tags?: ['typescript', 'nestjs'];
+    tags?: number[];
 
 
     @ApiPropertyOptional({
