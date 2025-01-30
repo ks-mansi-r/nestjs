@@ -81,7 +81,7 @@ export class Post {
 
     // @Column("simple-array", { nullable: true })  // Ensure that this field is properly handled
     
-    @ManyToMany(()=>Tag,{
+    @ManyToMany(()=>Tag,(tag)=>tag.posts, {
         // load all data into tag
         eager:true,
     })

@@ -130,13 +130,13 @@ export class PostsService {
         //delete meta options
         //confirmation
 
-        // let post = await this.postRepository.findOneBy({id:id});
+        let post = await this.postRepository.findOneBy({id:id});
 
-        // await this.postRepository.delete(id);
+        await this.postRepository.delete(id);
 
-        // await this.metaOptionsRepository.delete(post.metaOptions.id);
+        await this.metaOptionsRepository.delete(post.metaOptions.id);
 
-        // return { deleted: true, id : post.id};
+        return { deleted: true, id : post.id};
 
         let inversePost = await this.postRepository.findOne({
             where: { id },
