@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Header, Ip, Param, ParseIntPipe, Post, Query, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Header, Ip, Param, ParseIntPipe, Post, Query, ValidationPipe, DefaultValuePipe } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersService } from './providers/users.service';
 import { GetUsersParamDto } from './dtos/get-users-param.dto';
@@ -14,7 +14,7 @@ export class UsersController {
   ) { }
 
 
-  @Get('/:id/:optional?/')
+  @Get('/:id?')
   @ApiOperation({
     summary: 'Fetches a list of entries returned per query',
   })
@@ -37,12 +37,12 @@ export class UsersController {
     example: 1,
   })
 
-  public getUsers(@Param('id', ParseIntPipe) id: number | undefined,) {
-    console.log(id);
-    // console.log(typeof id);
-    // // console.log(typeof page);
-    // return 'You sent a get request to users endpoint';
-    // return this.userService.findAll(GetUsersParamDto);
+  public getUsers(
+    @Param() getUserParamDto: GetUsersParamDto,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+  ) {
+    return this.userService.findAll(getUserParamDto, limit, page);
   }
 
   @Post()
