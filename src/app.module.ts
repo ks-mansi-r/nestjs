@@ -11,6 +11,7 @@ import { Tag } from './tags/tag.entity';
 import { TagsModule } from './tags/tags.module';
 import { MetaOptionsModule } from './meta-options/meta-options.module';
 import { ConfigModule } from '@nestjs/config';
+import { PaginationModule } from './common/pagination/pagination.module';
 
 // Get the current NODE_ENV
 const ENV = process.env.NODE_ENV;
@@ -39,6 +40,7 @@ console.log(process.env.DATABASE_HOST)
     }),
     TagsModule,
     MetaOptionsModule,
+    PaginationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
