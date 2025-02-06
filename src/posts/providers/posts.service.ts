@@ -9,6 +9,7 @@ import { MetaOptionsService } from "src/meta-options/providers/meta-options.serv
 import { TagsService } from "src/tags/providers/tags.service";
 import { Tag } from "src/tags/tag.entity";
 import { PatchPostsDto } from "../dtos/patch-post.dto";
+import { GetPostsDto } from "../dtos/get-posts.dto";
 @Injectable()
 export class PostsService {
     constructor(
@@ -66,7 +67,7 @@ export class PostsService {
         }
     }
 
-    public async findAll(userId: String) {
+    public async findAll(postQuery: GetPostsDto ,userId: String) {
         
 // querying with eager loading
         // const user = this.usersService.findOneById(userId);
@@ -75,9 +76,11 @@ export class PostsService {
         //    add metaoptions for get a record
             relations:{
                 metaOptions: true,
-                author:true,
-                tags: true,
+                // author:true,
+                // tags: true,
             },
+            skip:(postQuery.page-1)*postQuery.limit,
+            take: postQuery.limit, 
          });
 
 
