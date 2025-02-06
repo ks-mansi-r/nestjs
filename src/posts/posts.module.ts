@@ -8,10 +8,11 @@ import { MetaOption } from 'src/meta-options/meta-option.entity';
 import { MetaOptionsModule } from 'src/meta-options/meta-options.module';
 import { TagsModule } from 'src/tags/tags.module';
 import { User } from 'src/users/user.entity';
+import { PaginationModule } from 'src/common/pagination/pagination.module';
 @Module({
     controllers : [ PostsController],
     providers: [PostsService],
-    imports:[UsersModule, TypeOrmModule.forFeature([Post,MetaOption])
+    imports:[UsersModule,PaginationModule ,TypeOrmModule.forFeature([Post,MetaOption])
 ,MetaOptionsModule,TagsModule
 ],
 })
