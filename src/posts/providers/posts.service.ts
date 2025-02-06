@@ -1,4 +1,4 @@
-import { Body, Injectable } from "@nestjs/common";
+import { BadRequestException, Body, Injectable, RequestTimeoutException } from "@nestjs/common";
 import { UsersService } from "src/users/providers/users.service";
 import { CreatePostDto } from "../dtos/create-post.dto";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -103,13 +103,41 @@ export class PostsService {
         //update the properties
         //Assign the new tags
         //save the post and return
+         let tags = undefined;
+         let post = undefined;
+     
 
-        let tags = await this.tagsService.findMultipleTags(patchPostDto.tags);
+         try{
+            tags = await this.tagsService.findMultipleTags(patchPostDto.tags);
 
-        let post = await this.postRepository.findOneBy({
-            id: patchPostDto.id,
-        })
+         } catch(error){
+            throw new RequestTimeoutException(
+                'Unable to process your request at the moment please try later',
+            );
+         }
 
+         if(!tags|| tags.length !== patchPostDto.tags.length){
+            throw new BadRequestException(
+                'please chclk your tag Id and ensure they are correct',
+            );
+            
+         }
+         try{
+            post = await this.postRepository.findOneBy({
+                id: patchPostDto.id,            
+            })
+         }
+         catch(error){
+            throw new RequestTimeoutException(
+                'unable to process your request at the moment please try later',
+            );
+
+         }
+         if(!post){
+            throw new BadRequestException('The post ID does not exist');
+         }
+        
+       
         post.title = patchPostDto.title?? post.title;
         post.content = patchPostDto.content?? post.content;
         post.status = patchPostDto.status?? post.status;
@@ -120,8 +148,15 @@ export class PostsService {
     
         post.tags = tags;
 
-        return await this.postRepository.save(post);
-    
+
+        try{
+        await this.postRepository.save(post);
+        }catch(error){
+            throw new RequestTimeoutException(
+                'Unable to process your request at the moment please try later',
+            );
+        }
+        return post;
     }
 
     public async delete(id:number){
