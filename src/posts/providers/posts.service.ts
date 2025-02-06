@@ -11,6 +11,7 @@ import { Tag } from "src/tags/tag.entity";
 import { PatchPostsDto } from "../dtos/patch-post.dto";
 import { GetPostsDto } from "../dtos/get-posts.dto";
 import { PaginationProvider } from "src/common/pagination/providers/pagination.provider";
+import { Paginated } from "src/common/pagination/interfaces/paginated.interface";
 @Injectable()
 export class PostsService {
     constructor(
@@ -69,7 +70,7 @@ export class PostsService {
         }
     }
 
-    public async findAll(postQuery: GetPostsDto ,userId: String) {
+    public async findAll(postQuery: GetPostsDto ,userId: String) :Promise<Paginated<Post>>{
         
 // querying with eager loading
         // const user = this.usersService.findOneById(userId);
