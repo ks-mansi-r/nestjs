@@ -3,6 +3,7 @@ import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersService } from './providers/users.service';
 import { GetUsersParamDto } from './dtos/get-users-param.dto';
 import { ApiQuery, ApiTags, ApiOperation, ApiResponse} from '@nestjs/swagger';
+import { CreateManyUsersDto } from './dtos/create-many-users.dto';
 // import { query, query } from 'express';
 
 @Controller('users')
@@ -54,6 +55,13 @@ export class UsersController {
     // console.log(ip);
     return this.userService.createUser(createUserDto);
   }
-
+  @Post('create-many')
+  public createManyUsers(@Body() createManyUserDto: CreateManyUsersDto
+  
+    
+  ) {
+    
+    return this.userService.createMany(createManyUserDto);
+  }
 
 }
