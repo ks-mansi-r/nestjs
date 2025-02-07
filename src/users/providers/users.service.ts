@@ -8,6 +8,7 @@ import { Repository , DataSource} from "typeorm";
 import { CreateUserDto } from "../dtos/create-user.dto";
 import { UsersCreateManyProvider } from "./users-create-many.provider";
 import { CreateManyUsersDto } from "../dtos/create-many-users.dto";
+import { CreateUserProvider } from "./create-user.provider";
 // import { ConfigService } from "@nestjs/config";
 
 /**
@@ -39,53 +40,17 @@ export class UsersService {
 
         //inject usersCReateManyprovider
         private readonly usersCreateManyProvider : UsersCreateManyProvider,
+
+
+        //inject createuserprovider
+        private readonly createUserProvider: CreateUserProvider,
     ) { }
 
 
     // creating a new user
     public async createUser(createUserDto: CreateUserDto) {
         // check is user exists with same email
-        let existingUser = undefined;
-
-        try{
-        
-            existingUser =await this.userRepository.findOne({
-            where: { email: createUserDto.email },
-        });
-    }
-    catch(error){
-         // MIght save the details of the exception
-         // INformation which is sensitive
-        throw new RequestTimeoutException(
-            'Unable to process your request at the moment please try later',
-            {
-                description:'Error connections to the database',
-            },
-        );
-    }
-
-        // Handle exception
-        if(existingUser ){
-          throw new BadRequestException(
-            'The user already exsists, please check your email.'
-          ) 
-        }
-        // create a new user 
-        let newUser = this.userRepository.create(createUserDto);
-
-
-        try{
-        newUser = await this.userRepository.save(newUser);
-        }catch(error){
-            throw new RequestTimeoutException(
-                'Unable to process your request at the moment please try later',
-            
-            {
-                description:'Error connections to the database',
-            },
-            );
-        }
-        return newUser;
+      return this.createUserProvider.createUser(createUserDto);
     }
 
 
