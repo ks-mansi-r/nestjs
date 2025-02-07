@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './providers/auth.service';
 import { SignInDto } from './dto/signin.dto';
 
@@ -12,13 +12,10 @@ export class AuthController {
     ){}
 
     @Post('sign-in')
+    @HttpCode(HttpStatus.OK)
     public async signIn(@Body() signInDto :SignInDto){
-
-        //Find  the user using emailId
-        //Throw an eception user not found
-        //compare the password to user hash
-        //send confirmation
-        
+ return this.authService.signIn(signInDto);
+      
 
     }
 
