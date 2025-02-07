@@ -8,10 +8,11 @@ import { User } from './user.entity';
 import { UsersCreateManyProvider } from './providers/users-create-many.provider';
 import { CreateUserProvider } from './providers/create-user.provider';
 // import { HashingProvider } from 'src/auth/providers/hashing.provider';
+import { FindOneUserByEmailProvider } from './providers/find-one-user-by-email.provider';
 
 @Module({
     controllers: [UsersController],
-    providers: [UsersService,AuthService, UsersCreateManyProvider, CreateUserProvider],
+    providers: [UsersService,AuthService, UsersCreateManyProvider, CreateUserProvider, FindOneUserByEmailProvider],
     exports: [UsersService],
     // imports:[forwardRef(()=> AuthModule)],
     imports:[TypeOrmModule.forFeature([User]),

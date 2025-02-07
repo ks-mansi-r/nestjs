@@ -9,6 +9,7 @@ import { CreateUserDto } from "../dtos/create-user.dto";
 import { UsersCreateManyProvider } from "./users-create-many.provider";
 import { CreateManyUsersDto } from "../dtos/create-many-users.dto";
 import { CreateUserProvider } from "./create-user.provider";
+import { FindOneUserByEmailProvider } from "./find-one-user-by-email.provider";
 // import { ConfigService } from "@nestjs/config";
 
 /**
@@ -44,6 +45,11 @@ export class UsersService {
 
         //inject createuserprovider
         private readonly createUserProvider: CreateUserProvider,
+  
+  // inject findOneBYEmailprovider
+  private readonly findOneUserByEmailProvider: FindOneUserByEmailProvider,
+
+
     ) { }
 
 
@@ -125,5 +131,10 @@ export class UsersService {
     public async createMany(createManyUserDto:CreateManyUsersDto)
     {
         return await this.usersCreateManyProvider.createMany(createManyUserDto);
+    }
+
+    public async findOneByEmail(email:string){
+
+        return await this.findOneUserByEmailProvider.findOneByEmail(email);
     }
 }
