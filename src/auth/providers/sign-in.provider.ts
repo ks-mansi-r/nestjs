@@ -57,8 +57,9 @@ export class SignInProvider {
         }
         
         console.log('JWT Secret:', this.jwtConfiguration.secret);
-
+   console.log('JWT audience:',this.jwtConfiguration.audience );
      
+        //generate access token 
          const accessToken = await this.jwtService.signAsync({
   
             sub: user.id,
@@ -72,6 +73,8 @@ export class SignInProvider {
 
         });
 
+
+        //return access token
      return {
         accessToken,
      };

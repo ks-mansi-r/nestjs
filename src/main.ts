@@ -2,6 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ConfigModule } from '@nestjs/config';
+
 // import { ConfigService } from '@nestjs/config';
 // import * as dotenv from 'dotenv';
 

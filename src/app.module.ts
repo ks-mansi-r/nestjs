@@ -13,7 +13,9 @@ import { MetaOptionsModule } from './meta-options/meta-options.module';
 import { ConfigModule } from '@nestjs/config';
 import { PaginationModule } from './common/pagination/pagination.module';
 import jwtConfig from './auth/config/jwt.config';
-
+import appConfig from './config/app.config';
+import databaseConfig from './config/database.config';
+import enviromentValidation from './config/enviroment.validation';
 // Get the current NODE_ENV
 const ENV = process.env.NODE_ENV;
 
@@ -23,7 +25,9 @@ console.log(process.env.DATABASE_HOST)
   imports: [UsersModule, PostsModule, AuthModule,
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [jwtConfig], 
+      envFilePath: !ENV ? '.env' : `.env.${ENV}`,
+      load: [jwtConfig],
+      // validationSchema: enviromentValidation,
       // envFilePath:['.env.development','.env'],
       // envFilePath: !ENV ? '.env' : `.env.${ENV}`,
       // envFilePath: '.env'
