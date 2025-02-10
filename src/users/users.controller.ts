@@ -50,7 +50,7 @@ export class UsersController {
 
   @Post()
   // @SetMetadata('authType','None')
-  @Auth(AuthType.None)
+  @Auth(AuthType.None,AuthType.Bearer)
   public createUsers(@Body() createUserDto: CreateUserDto
   
     // @Ip() ip: any,
