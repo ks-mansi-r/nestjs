@@ -1,12 +1,13 @@
-import { Body, Controller, Delete, Get, Header, Ip, Param, ParseIntPipe, Post, Query, ValidationPipe, DefaultValuePipe, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Header, Ip, Param, ParseIntPipe, Post, Query, ValidationPipe, DefaultValuePipe, UseGuards, SetMetadata } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersService } from './providers/users.service';
 import { GetUsersParamDto } from './dtos/get-users-param.dto';
 import { ApiQuery, ApiTags, ApiOperation, ApiResponse} from '@nestjs/swagger';
 import { CreateManyUsersDto } from './dtos/create-many-users.dto';
 import { AccessTokenGuard } from 'src/auth/guards/access-token/access-token.guard';
+import { Auth } from 'src/auth/decorator/auth.decorator';
 // import { query, query } from 'express';
-
+import { AuthType } from 'src/auth/enums/auth-type.enum';
 @Controller('users')
 @ApiTags('Users')
 export class UsersController {
@@ -48,6 +49,8 @@ export class UsersController {
   }
 
   @Post()
+  // @SetMetadata('authType','None')
+  @Auth(AuthType.None)
   public createUsers(@Body() createUserDto: CreateUserDto
   
     // @Ip() ip: any,
