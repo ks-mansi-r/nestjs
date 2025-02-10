@@ -38,6 +38,8 @@ export class AccessTokenGuard implements CanActivate {
         this.jwtConfiguration,
       );
 
+      // 💡 We're assigning the payload to the request object here
+      // so that we can access it in our route handlers
       request[REQUEST_USER_KEY] = payload;
       console.log(payload);
       

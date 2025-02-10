@@ -12,10 +12,15 @@ import { FindOneUserByEmailProvider } from './providers/find-one-user-by-email.p
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import jwtConfig from 'src/auth/config/jwt.config';
+import { APP_GUARD } from '@nestjs/core';
+import { AccessTokenGuard } from 'src/auth/guards/access-token/access-token.guard';
 
 @Module({
     controllers: [UsersController],
-    providers: [UsersService,AuthService, UsersCreateManyProvider, CreateUserProvider, FindOneUserByEmailProvider],
+    providers: [UsersService,AuthService, UsersCreateManyProvider, CreateUserProvider, FindOneUserByEmailProvider,
+        {provide: APP_GUARD, 
+            useClass:AccessTokenGuard,}],
+            
     exports: [UsersService],
     // imports:[forwardRef(()=> AuthModule)],
     imports:[TypeOrmModule.forFeature([User]),
