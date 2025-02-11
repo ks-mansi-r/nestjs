@@ -6,6 +6,7 @@ import jwtConfig from '../config/jwt.config';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigType } from '@nestjs/config';
 import { ActiveUserData } from '../interfaces/active-user-data.interface';
+import { GenerateTokensProvider } from './generate-tokens.provider';
 @Injectable()
 export class SignInProvider {
 
@@ -21,13 +22,17 @@ export class SignInProvider {
        private readonly hashingProvider : HashingProvider,
 
        //inject jwtservice
-       private readonly jwtService: JwtService,
+    //    private readonly jwtService: JwtService,
 
-       //inject jwtConfiguration
+    //    //inject jwtConfiguration
 
-       @Inject(jwtConfig.KEY)
-       private readonly jwtConfiguration: ConfigType<typeof jwtConfig>,
+    //    @Inject(jwtConfig.KEY)
+    //    private readonly jwtConfiguration: ConfigType<typeof jwtConfig>,
 
+
+       //inject generatetoken provider
+       private readonly generateTokensProvider: GenerateTokensProvider,
+       
     ){}
     public async signIn(signInDto:SignInDto){
         //find the user using email ID
@@ -57,28 +62,31 @@ export class SignInProvider {
          throw new UnauthorizedException('Incorrect password');
         }
         
-        console.log('JWT Secret:', this.jwtConfiguration.secret);
-   console.log('JWT audience:',this.jwtConfiguration.audience );
+//         console.log('JWT Secret:', this.jwtConfiguration.secret);
+//    console.log('JWT audience:',this.jwtConfiguration.audience );
      
-        //generate access token 
-         const accessToken = await this.jwtService.signAsync({
+//         //generate access token 
+//          const accessToken = await this.jwtService.signAsync({
   
-            sub: user.id,
-            email:user.email,
-         }as ActiveUserData,
-        {
-            audience : this.jwtConfiguration.audience,
-            issuer: this.jwtConfiguration.issuer,
-            secret: this.jwtConfiguration.secret,
-            expiresIn: this.jwtConfiguration.accessTokenTtl,
+//             sub: user.id,
+//             email:user.email,
+//          }as ActiveUserData,
+//         {
+//             audience : this.jwtConfiguration.audience,
+//             issuer: this.jwtConfiguration.issuer,
+//             secret: this.jwtConfiguration.secret,
+//             expiresIn: this.jwtConfiguration.accessTokenTtl,
 
-        }
-    ,);
+//         }
+//     ,);
 
 
-        //return access token
-     return {
-        accessToken,
-     };
+//         //return access token
+//      return {
+//         accessToken,
+//      };
+
+//generate access token 
+return await this.generateTokensProvider.generateTokens(user);
     }
 }
